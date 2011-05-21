@@ -1,0 +1,13 @@
+obj*
+*obj
+*.depend
+*.layout
+Debug*
+*.sdf
+*.suo
+*.user
+*.opensdf
+dist
+bin
+gen
+.metadata
