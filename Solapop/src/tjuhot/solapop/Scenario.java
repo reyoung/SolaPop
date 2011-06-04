@@ -24,11 +24,27 @@ public class Scenario extends Entity {
 	public void addRat(int x,int y){
 		Rat r= new Rat(m_rat_t, m_hithat_t);
 		r.setPosition(x, y);
+		r.mx = x;
+		r.my = y;
 		this.attachChild(r);
 		m_rats.add(r);
 	}
 	public void removeRat(int i){
 		this.detachChild(m_rats.get(i));
 		m_rats.remove(i);
+	}
+	public void onClick(int x ,int y)
+	{
+		for(Rat r : m_rats)
+		{
+			if((r.mx + 128) > x 
+					&& r.mx < x
+					&& r.my < y
+					&& (r.my + 128) > y)
+			{
+				r.hit();
+				break;
+			}
+		}
 	}
 }
