@@ -14,6 +14,9 @@ public class WelcomMenu extends Activity {
         	public void run(){
         		try {
 					sleep(5000);
+					//change
+					Intent intent= new Intent(WelcomMenu.this,GameMenu.class);
+					startActivity(intent);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
