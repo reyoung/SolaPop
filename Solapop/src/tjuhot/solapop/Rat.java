@@ -20,7 +20,7 @@ public class Rat extends Entity {
 	private static final int INCRESE = 0;
 	private static final int DECRESE = 1;
 	private static final int HITTED = 2;
-	private static final int NORAT = 3;
+//	private static final int NORAT = 3;
 	private static final String DB_FILTER = "Solapop.Rat";
 
 	void debug(String msg) {
@@ -40,7 +40,7 @@ public class Rat extends Entity {
 
 	public void showNext() {
 		debug("Show Next");
-		if(mIncrese == NORAT)return;
+//		if(mIncrese == NORAT)return;
 		if (mIncrese == INCRESE) {
 			++mPos;
 		} else if (mIncrese == DECRESE) {
@@ -53,7 +53,6 @@ public class Rat extends Entity {
 		if (mPos <= 0) {
 			mPos = 0;
 			mIncrese = INCRESE;
-			//mIncrese = NORAT;
 		}
 		this.detachChild(mSprite);
 		if (HITTED == mIncrese) {
@@ -67,12 +66,23 @@ public class Rat extends Entity {
 		this.attachChild(mSprite);
 	}
 
+	public int  picSize(){
+		return 6;
+	}
+	
 	public int hit() {
-		if(mIncrese == NORAT){
+		if(mPos == 0)
 			return 0;
-		}
 		this.mHitSound.play();
 		mIncrese = HITTED;
 		return mPos;
 	}
+
+	public boolean isHole(){
+		return mPos==0;
+	}
+	public boolean isHighest(){
+		return mPos==6;
+	}
+	
 }

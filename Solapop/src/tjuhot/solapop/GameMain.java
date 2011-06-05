@@ -34,9 +34,9 @@ import android.util.Log;
 
 public class GameMain extends BaseGameActivity {
 
-	private static final int CAMERA_WIDTH = 720;
-	private static final int CAMERA_HEIGHT = 480;
-	private static final String DB_FILTER = "GameMain";
+	private static final int CAMERA_WIDTH = 1024;
+	private static final int CAMERA_HEIGHT = 600;
+	private static final String DB_FILTER = "GameMain"; 
 	
 	private Sound mHitSound;
 	private static final String STR_RAT_PATH[] = {
@@ -122,6 +122,7 @@ public class GameMain extends BaseGameActivity {
 		final Scene scene = new Scene(1);
 		final Scenario sc = new Scenario(mRatTextureRegions, mHitRatTextureRegions,mHitSound);
 		scene.getLastChild().attachChild(sc);
+		sc.loadLevel(new LevelStub(getApplicationContext(), mEngine));
 		scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
 			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 				float x = pSceneTouchEvent.getX();
@@ -130,10 +131,7 @@ public class GameMain extends BaseGameActivity {
 				return false;
 			}
 		});
-		sc.addRat(0, 0);
-		sc.addRat(250, 250);
-		sc.addRat(400, 400);
-		scene.registerUpdateHandler(new TimerHandler( 0.2f , true,new ITimerCallback() {
+		scene.registerUpdateHandler(new TimerHandler( 0.02f , true,new ITimerCallback() {
 			public void onTimePassed(TimerHandler pTimerHandler) {
 				sc.step();
 			}
