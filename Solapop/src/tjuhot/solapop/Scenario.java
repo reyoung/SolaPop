@@ -8,14 +8,17 @@ import org.anddev.andengine.audio.sound.Sound;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.entity.text.Text;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 import tjuhot.solapop.ActionProxy.MissListener;
 
 import android.graphics.Point;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.util.Log;
 
-public class Scenario extends Entity implements MissListener{
+public class Scenario extends Entity implements MissListener,OnCompletionListener{
 	List<TextureRegion> m_rat_t;
 	List<TextureRegion> m_hithat_t;
 	Sound				mMouseHitSound;
@@ -29,6 +32,13 @@ public class Scenario extends Entity implements MissListener{
 	Engine				mEngine;
 	ComboShow			mComboShow;
 	int					m_hitcount;
+	
+	public interface OnGameOverListener{
+		void onGameOver();
+	}
+	
+	List<OnGameOverListener> m_gameoverListeners;
+	
 	private static final String DB_FILTER="Solapop.Scenario";
 	
 	void debug(String msg){
@@ -55,7 +65,13 @@ public class Scenario extends Entity implements MissListener{
 		mComboShow = new ComboShow(0, aEngine);
 		clearCombo();
 		m_actionProxy.addMissListener(this);
+		m_gameoverListeners = new ArrayList<OnGameOverListener>();
 	}
+	void addGameoverListener(OnGameOverListener l){
+		this.m_gameoverListeners.add(l);
+	}
+	
+	
 	public void step(){
 		m_actionProxy.step();
 		int rsize=  m_curLevel.getRatSize()+m_curBeat;
@@ -122,10 +138,19 @@ public class Scenario extends Entity implements MissListener{
 		if(m_bgm!=null){
 			m_bgm.play();
 		}
+		m_bgm.setOnCompletionListener(this);
 		m_curLevel = l;
 		m_curBeat = 0;
 	}
 	public void onMiss() {
 		this.clearCombo();
+	}
+	public void onCompletion(MediaPlayer mp) {
+		ResultPage rp = new ResultPage(mEngine);
+		rp.show(1000);
+		this.attachChild(rp);
+		for(OnGameOverListener l : this.m_gameoverListeners){
+			l.onGameOver();
+		}
 	}
 }

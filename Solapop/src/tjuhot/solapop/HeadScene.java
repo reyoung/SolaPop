@@ -31,7 +31,7 @@ public class HeadScene extends Entity {
 				32, true, Color.RED);
 		this.mEngine.getTextureManager().loadTexture(mFontTexture);
 		this.mEngine.getFontManager().loadFont(mFont);
-		mText = new Text(700, 50, mFont, String.format("0/%s", mTotalScore),HorizontalAlign.CENTER);
+		mText = new Text(500, 50, mFont, String.format("%s/%s", mCurrentScore,mTotalScore),HorizontalAlign.CENTER);
 		this.attachChild(mText);
 		initScore();
 	}
@@ -54,7 +54,7 @@ public class HeadScene extends Entity {
 	}
 	private void initScore()
 	{
-		final Line line = new Line(200, 50,600 , 50, 30);
+		final Line line = new Line(0, 50,400 , 50, 30);
 		line.setColor((float)0.0, (float)0.0, (float)1.0);
 		this.attachChild(line);
 	}
@@ -63,13 +63,13 @@ public class HeadScene extends Entity {
 		float scoreRatio = (float)mCurrentScore / (float)mTotalScore;
 		float scoreLength = scoreRatio * 400;
 		scoreLength = scoreLength > 400 ? 400 : scoreLength;
-		final Line line = new Line(200, 50,200+scoreLength ,50,30);
+		final Line line = new Line(0, 50,0+scoreLength ,50,30);
 		if(scoreRatio < 0.6)line.setColor((float)0.0, (float)1.0, (float)0.0);
 		else if(scoreRatio < 0.8)line.setColor((float)1.0, (float)0.843, (float)0.0);
 		else line.setColor((float)1.0, (float)0.0, (float)0.0);
 		this.attachChild(line);
 		this.detachChild(mText);
-		mText = new Text(700, 50, mFont, String.format("%s/%s", mCurrentScore,mTotalScore),HorizontalAlign.CENTER);
+		mText = new Text(500, 50, mFont, String.format("%s/%s", mCurrentScore,mTotalScore),HorizontalAlign.CENTER);
 		this.attachChild(mText);
 	}
 }
