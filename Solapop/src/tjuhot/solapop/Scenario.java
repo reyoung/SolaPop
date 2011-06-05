@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.anddev.andengine.audio.music.Music;
+import org.anddev.andengine.audio.sound.Sound;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 public class Scenario extends Entity {
 	List<TextureRegion> m_rat_t;
 	List<TextureRegion> m_hithat_t;
-	Music				mMusic;
+	Sound				mMouseHitSound;
 	List<Rat>			m_rats;
-	public Scenario(List<TextureRegion> rat_t,List<TextureRegion> hitrat_t,Music aMusic){
+	public Scenario(List<TextureRegion> rat_t,List<TextureRegion> hitrat_t,Sound aMusic){
 		super(0,0);
 		m_rat_t = rat_t;
 		m_hithat_t = hitrat_t;
-		mMusic = aMusic;
+		mMouseHitSound = aMusic;
 		m_rats = new ArrayList<Rat>();
 	}
 	public void step(){
@@ -25,7 +26,7 @@ public class Scenario extends Entity {
 		}
 	}
 	public void addRat(int x,int y){
-		Rat r= new Rat(m_rat_t, m_hithat_t,mMusic);
+		Rat r= new Rat(m_rat_t, m_hithat_t,mMouseHitSound);
 		r.setPosition(x, y);
 		this.attachChild(r);
 		m_rats.add(r);
