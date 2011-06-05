@@ -6,5 +6,4 @@ public class ComboShow extends Entity {
 	public ComboShow(){
 		super(0,0);	
 	}
-	
 }
