@@ -18,6 +18,8 @@ public:
 protected:
     virtual void mousePressEvent(QMouseEvent *);
 
+    virtual void keyPressEvent(QKeyEvent *);
+
 private slots:
     void on_openBtn_clicked();
 

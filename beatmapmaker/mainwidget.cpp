@@ -57,3 +57,10 @@ void MainWidget::on_saveBtn_clicked()
         file.close();
     }
 }
+
+void MainWidget::keyPressEvent(QKeyEvent * ev)
+{
+//    ev->accept();
+//    this->m_beats.append(this->m_media->currentTime());
+//    qDebug()<<"Key Append "<<this->m_media->currentTime();
+}
