@@ -1,15 +1,38 @@
 package tjuhot.solapop;
 
+import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.primitive.Line;
+import org.anddev.andengine.entity.text.Text;
+import org.anddev.andengine.entity.text.TickerText;
+import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.opengl.texture.Texture;
+import org.anddev.andengine.opengl.texture.TextureOptions;
+import org.anddev.andengine.util.HorizontalAlign;
+
+import android.graphics.Color;
+import android.graphics.Typeface;
 
 public class HeadScene extends Entity {
 	private int mCurrentScore;
 	private int mTotalScore;
-	public HeadScene(int totalBeat)
+	private Font mFont;
+	private Texture mFontTexture;
+	private Engine mEngine;
+	private Text mText;
+	public HeadScene(int totalBeat,Engine aEngine)
 	{
+		mEngine = aEngine;
 		mCurrentScore = 0;
 		mTotalScore = totalBeat * 2;
+		this.mFontTexture = new Texture(128, 128, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		this.mFont = new Font(this.mFontTexture, 
+				Typeface.create(Typeface.DEFAULT, Typeface.BOLD),
+				32, true, Color.RED);
+		this.mEngine.getTextureManager().loadTexture(mFontTexture);
+		this.mEngine.getFontManager().loadFont(mFont);
+		mText = new Text(700, 50, mFont, String.format("0/%s", mTotalScore),HorizontalAlign.CENTER);
+		this.attachChild(mText);
 		initScore();
 	}
 	public void hitLevelProc(int hitScore)
@@ -41,5 +64,8 @@ public class HeadScene extends Entity {
 		else if(scoreRatio < 0.8)line.setColor((float)1.0, (float)0.843, (float)0.0);
 		else line.setColor((float)1.0, (float)0.0, (float)0.0);
 		this.attachChild(line);
+		this.detachChild(mText);
+		mText = new Text(700, 50, mFont, String.format("0/%s", mTotalScore),HorizontalAlign.CENTER);
+		this.attachChild(mText);
 	}
 }
