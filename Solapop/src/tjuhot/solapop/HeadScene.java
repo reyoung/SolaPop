@@ -65,7 +65,7 @@ public class HeadScene extends Entity {
 		else line.setColor((float)1.0, (float)0.0, (float)0.0);
 		this.attachChild(line);
 		this.detachChild(mText);
-		mText = new Text(700, 50, mFont, String.format("0/%s", mTotalScore),HorizontalAlign.CENTER);
+		mText = new Text(700, 50, mFont, String.format("%s/%s", mCurrentScore,mTotalScore),HorizontalAlign.CENTER);
 		this.attachChild(mText);
 	}
 }
