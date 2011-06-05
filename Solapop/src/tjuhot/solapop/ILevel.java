@@ -11,6 +11,6 @@ public interface ILevel {
 	public List<Point>	 getRats();
 	public TextureRegion getBackground();
 	public Music		 getMusic();
-	public List<Long>		 getBeats();
+	public List<Long>	getBeats();
 	public int			getRatSize();
 }

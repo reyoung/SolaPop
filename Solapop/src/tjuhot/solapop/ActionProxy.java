@@ -6,15 +6,33 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
+import android.util.Log;
+
 public class ActionProxy {
+	public interface MissListener{
+		void onMiss();
+	}
+	List<MissListener>	m_misslisteners;
+	
 	List<Rat> m_rat;
 	List<__AUX_ActionHelper> m_helpers;
-
+	private static final String DB_FILTER="Solapop.ActionProxy";
+	
+	void debug(String msg){
+		Log.d(DB_FILTER, msg);
+	}
+	
 	public ActionProxy(List<Rat> r) {
 		m_rat = r;
+		m_misslisteners = new ArrayList<MissListener>();
 		m_helpers = new ArrayList<__AUX_ActionHelper>();
 	}
+	public void addMissListener(MissListener ml){
+		m_misslisteners.add(ml);
+	}
+	
 
+	
 	public void step() {
 		for (int i = 0; i < m_helpers.size(); ++i) {
 			__AUX_ActionHelper hp = m_helpers.get(i);
@@ -24,10 +42,11 @@ public class ActionProxy {
 				r.showNext();
 				++hp.step_count;
 			} else if (r.isHole()) {
-
+				
 			} else if (r.isHitted()) {
 				r.showNext();
 				hp.step_count = -10;
+				hp.ismiss = false;
 			} else if (!r.isHighest()) {
 				r.showNext();
 			} else {
@@ -39,7 +58,14 @@ public class ActionProxy {
 		}
 		Iterator<__AUX_ActionHelper> it = m_helpers.iterator();
 		while (it.hasNext()) {
-			if (m_rat.get((it.next().index)).isHole()) {
+			__AUX_ActionHelper helper = it.next();
+			Rat rat = m_rat.get((helper.index));
+			if (rat.isHole()) {
+				if(helper.ismiss){
+					for(MissListener ml:m_misslisteners){
+						ml.onMiss();
+					}
+				}
 				it.remove();
 			}
 		}
@@ -60,7 +86,7 @@ public class ActionProxy {
 				avaliableIndex.add(index);
 			}
 		}
-		index = (int) (Math.random() * (avaliableIndex.size()));
+		index = (int) (Math.random() * (avaliableIndex.size() + 0.5f));
 		if (index == m_rat.size()) {
 			return;
 		} else {
@@ -76,9 +102,10 @@ public class ActionProxy {
 		public int step_high;
 		public int index;
 		public int step_count;
-
+		public boolean ismiss;
 		public __AUX_ActionHelper() {
 			step_count = 0;
+			ismiss = true;
 		}
 	}
 

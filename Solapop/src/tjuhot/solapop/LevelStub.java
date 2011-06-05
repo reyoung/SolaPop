@@ -20,9 +20,18 @@ public class LevelStub implements ILevel {
 
 	Context m_context;
 	Engine	m_engine;
+	List<Long> m_beats;
 	public LevelStub(Context app,Engine eng){
 		m_context = app;
 		m_engine = eng;
+		List<Long > retv= new ArrayList<Long>();
+		Random r = new Random(17);
+		for(int i=0;i<1000;++i){
+			long l = r.nextLong()%(300*1000);
+			retv.add(l>0?new Long(l):new Long(-l));
+		}
+		Collections.sort(retv);
+		m_beats = retv;
 	}
 	public TextureRegion getBackground() {
 		Texture t = new Texture(2048, 1024); 
@@ -52,17 +61,13 @@ public class LevelStub implements ILevel {
 		retv.add(new Point(512+150,300+60));
 		retv.add(new Point(512+150+160,300+60));
 		retv.add(new Point(512+60,300+150));
+		retv.add(new Point(512+60+170,300+150));
+		retv.add(new Point(512+60+170+110,300+150));
+		retv.add(new Point(400,300+75));
 		return retv;
 	}
 	public List<Long> getBeats() {
-		List<Long > retv= new ArrayList<Long>();
-		Random r = new Random(17);
-		for(int i=0;i<1000;++i){
-			long l = r.nextLong()%(300*1000);
-			retv.add(l>0?new Long(l):new Long(-l));
-		}
-		Collections.sort(retv);
-		return retv;
+		return m_beats;
 	}
 	public int getRatSize() {
 		return 4;
