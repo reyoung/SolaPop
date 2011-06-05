@@ -122,7 +122,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 		debug("OnLoadScense");
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 		final Scene scene = new Scene(1);
-		final Scenario sc = new Scenario(mRatTextureRegions, mHitRatTextureRegions,mHitSound,mEngine);
+		final Scenario sc = new Scenario(mRatTextureRegions, mHitRatTextureRegions,mHitSound,mEngine,getApplicationContext());
 		scene.getLastChild().attachChild(sc);
 		sc.loadLevel(new LevelStub(getApplicationContext(), mEngine));
 		scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
@@ -133,6 +133,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 				return false;
 			}
 		});
+		sc.addGameoverListener(this);
 		scene.registerUpdateHandler(new TimerHandler( 0.02f , true,new ITimerCallback() {
 			public void onTimePassed(TimerHandler pTimerHandler) {
 				sc.step();

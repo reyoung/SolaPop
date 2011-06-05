@@ -26,8 +26,8 @@ public class LevelStub implements ILevel {
 		m_engine = eng;
 		List<Long > retv= new ArrayList<Long>();
 		Random r = new Random(17);
-		for(int i=0;i<1000;++i){
-			long l = r.nextLong()%(300*1000);
+		for(int i=0;i<80;++i){
+			long l = r.nextLong()%(30*1000);
 			retv.add(l>0?new Long(l):new Long(-l));
 		}
 		Collections.sort(retv);

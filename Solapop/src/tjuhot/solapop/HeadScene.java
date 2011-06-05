@@ -6,10 +6,12 @@ import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.text.Text;
 import org.anddev.andengine.entity.text.TickerText;
 import org.anddev.andengine.opengl.font.Font;
+import org.anddev.andengine.opengl.font.FontFactory;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.util.HorizontalAlign;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
@@ -20,22 +22,20 @@ public class HeadScene extends Entity {
 	private Texture mFontTexture;
 	private Engine mEngine;
 	private Text mText;
-	public HeadScene(int totalBeat,Engine aEngine)
+	public HeadScene(int totalBeat,Engine aEngine,Context cont)
 	{
 		mEngine = aEngine;
 		mCurrentScore = 0;
 		mTotalScore = totalBeat * 2;
-		this.mFontTexture = new Texture(128, 128, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		this.mFont = new Font(this.mFontTexture, 
-				Typeface.create(Typeface.DEFAULT, Typeface.BOLD),
-				32, true, Color.RED);
+		this.mFontTexture = new Texture(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		this.mFont = FontFactory.createFromAsset(this.mFontTexture, cont, "fonts/Plok.ttf", 32, true, Color.RED);
 		this.mEngine.getTextureManager().loadTexture(mFontTexture);
 		this.mEngine.getFontManager().loadFont(mFont);
-		mText = new Text(500, 50, mFont, String.format("%s/%s", mCurrentScore,mTotalScore),HorizontalAlign.CENTER);
+		mText = new Text(420, 50, mFont, String.format("%s/%s", mCurrentScore,mTotalScore),HorizontalAlign.CENTER);
 		this.attachChild(mText);
 		initScore();
 	}
-	public int getMaxScore()
+	public int getScore()
 	{
 		return mCurrentScore > mTotalScore? mTotalScore : mCurrentScore;
 	}
@@ -69,7 +69,7 @@ public class HeadScene extends Entity {
 		else line.setColor((float)1.0, (float)0.0, (float)0.0);
 		this.attachChild(line);
 		this.detachChild(mText);
-		mText = new Text(500, 50, mFont, String.format("%s/%s", mCurrentScore,mTotalScore),HorizontalAlign.CENTER);
+		mText = new Text(420, 50, mFont, String.format("%s/%s", mCurrentScore,mTotalScore),HorizontalAlign.CENTER);
 		this.attachChild(mText);
 	}
 }

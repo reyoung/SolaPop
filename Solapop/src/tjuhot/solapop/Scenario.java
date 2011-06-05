@@ -13,6 +13,7 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 import tjuhot.solapop.ActionProxy.MissListener;
 
+import android.content.Context;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -32,7 +33,7 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 	Engine				mEngine;
 	ComboShow			mComboShow;
 	int					m_hitcount;
-	
+	Context				m_context;
 	public interface OnGameOverListener{
 		void onGameOver();
 	}
@@ -54,7 +55,7 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 	}
 	
 	public Scenario(List<TextureRegion> rat_t,List<TextureRegion> hitrat_t,
-			Sound aMusic,Engine aEngine){
+			Sound aMusic,Engine aEngine, Context cont){
 		super(0,0);
 		m_rat_t = rat_t;
 		m_hithat_t = hitrat_t;
@@ -62,10 +63,11 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 		mEngine = aEngine;
 		m_rats = new ArrayList<Rat>();
 		m_actionProxy = new ActionProxy(m_rats);
-		mComboShow = new ComboShow(0, aEngine);
-		clearCombo();
 		m_actionProxy.addMissListener(this);
 		m_gameoverListeners = new ArrayList<OnGameOverListener>();
+		m_context = cont;
+		mComboShow = new ComboShow(0, aEngine,m_context);
+		clearCombo();
 	}
 	void addGameoverListener(OnGameOverListener l){
 		this.m_gameoverListeners.add(l);
@@ -76,6 +78,7 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 		m_actionProxy.step();
 		int rsize=  m_curLevel.getRatSize()+m_curBeat;
 		List<Long> beats = m_curLevel.getBeats();
+		rsize = rsize>beats.size()?beats.size():rsize;
 		int mpos = this.m_bgm.getMediaPlayer().getCurrentPosition();
 		for(int i=m_curBeat;i<rsize;++i){
 			int pos = beats.get(i).intValue();
@@ -122,7 +125,7 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 		this.detachChildren();
 		m_backgroud = new Sprite(0, 0, l.getBackground());
 		this.attachChild(m_backgroud);
-		m_hScene = new HeadScene(l.getBeats().size(),mEngine);
+		m_hScene = new HeadScene(l.getBeats().size(),mEngine,m_context);
 		m_hScene.setPosition(20, 0);
 		this.attachChild(m_hScene);
 		mComboShow.setPosition(800, 0);
@@ -146,9 +149,11 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 		this.clearCombo();
 	}
 	public void onCompletion(MediaPlayer mp) {
-		ResultPage rp = new ResultPage(mEngine);
-		rp.show(1000);
+		ResultPage rp = new ResultPage(mEngine,m_context);
+		
 		this.attachChild(rp);
+		rp.show(m_hScene.getScore(),mComboShow.getMaxCombo());
+		rp.setPosition(300, 200);
 		for(OnGameOverListener l : this.m_gameoverListeners){
 			l.onGameOver();
 		}
