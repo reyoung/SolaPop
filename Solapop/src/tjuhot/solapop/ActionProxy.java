@@ -20,6 +20,8 @@ public class ActionProxy {
 			__AUX_ActionHelper hp = m_helpers.get(i);
 			Rat r = m_rat.get(hp.index);
 			if (hp.step_count < 0) {
+				r.setHit();
+				r.showNext();
 				++hp.step_count;
 			} else if (r.isHole()) {
 

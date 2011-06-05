@@ -26,7 +26,9 @@ public class Rat extends Entity {
 	void debug(String msg) {
 		Log.d(DB_FILTER, msg);
 	}
-
+	public void setHit(){
+		mFlag = HITTED;
+	}
 	public Rat(List<TextureRegion> aTextures, List<TextureRegion> aHitTextures,Sound aHitSound) {
 		super(0, 0);
 		mTextures = aTextures;
@@ -72,6 +74,9 @@ public class Rat extends Entity {
 			return 0;
 		this.mHitSound.play();
 		mFlag = HITTED;
+		if(mPos==6){
+			--mPos;
+		}
 		return mPos;
 	}
 
@@ -79,7 +84,7 @@ public class Rat extends Entity {
 		return mPos==0;
 	}
 	public boolean isHighest(){
-		return mPos==6;
+		return mPos==6&&!isHitted();
 	}
 	public boolean isHitted(){
 		return mFlag == HITTED;
