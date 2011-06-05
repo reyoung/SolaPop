@@ -19,6 +19,8 @@ public class Scenario extends Entity {
 	List<Rat>			m_rats;
 	Sprite				m_backgroud;
 	Music				m_bgm;
+	ActionProxy			m_actionProxy;
+	
 	
 	private static final String DB_FILTER="Solapop.Scenario";
 	
@@ -33,13 +35,17 @@ public class Scenario extends Entity {
 		m_hithat_t = hitrat_t;
 		mMouseHitSound = aMusic;
 		m_rats = new ArrayList<Rat>();
+		m_actionProxy = new ActionProxy(m_rats);
+		
 	}
+	int temp=0;
 	public void step(){
-//		for(Rat r: m_rats){
-//			r.showNext();
-//		}
-		int ms = m_bgm.getMediaPlayer().getCurrentPosition();
-		debug(String.format("Current Music Pos = %d", ms));
+		if(temp%51==0){
+			temp=0;
+			m_actionProxy.showRat(20);
+		}
+		++temp;
+		m_actionProxy.step();
 	}
 	public void addRat(int x,int y){
 		Rat r= new Rat(m_rat_t, m_hithat_t,mMouseHitSound);
