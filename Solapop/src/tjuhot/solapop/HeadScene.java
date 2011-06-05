@@ -35,6 +35,10 @@ public class HeadScene extends Entity {
 		this.attachChild(mText);
 		initScore();
 	}
+	public int getMaxScore()
+	{
+		return mCurrentScore > mTotalScore? mTotalScore : mCurrentScore;
+	}
 	public void hitLevelProc(int hitScore)
 	{
 		if(hitScore >= 5)
