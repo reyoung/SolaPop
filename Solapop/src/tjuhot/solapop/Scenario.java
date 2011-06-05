@@ -23,7 +23,7 @@ public class Scenario extends Entity {
 	ActionProxy			m_actionProxy;
 	HeadScene			m_hScene;
 	ILevel				m_curLevel;
-	Engine				mEngine;
+	int					m_curBeat;	Engine				mEngine;
 	
 	private static final String DB_FILTER="Solapop.Scenario";
 	
