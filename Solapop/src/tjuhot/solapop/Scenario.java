@@ -30,7 +30,7 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 	ILevel				m_curLevel;
 	int					m_curBeat;	
 	Engine				mEngine;
-	
+	ComboShow			mComboShow;
 	int					m_hitcount;
 	
 	public interface OnGameOverListener{
@@ -46,10 +46,11 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 	}
 	public void increseCombo(){
 		++m_hitcount;
-		
+		mComboShow.onComboChanged(m_hitcount);
 	}
 	public void clearCombo(){
 		m_hitcount = 0;
+		mComboShow.clearCombo();
 	}
 	
 	public Scenario(List<TextureRegion> rat_t,List<TextureRegion> hitrat_t,
@@ -61,6 +62,7 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 		mEngine = aEngine;
 		m_rats = new ArrayList<Rat>();
 		m_actionProxy = new ActionProxy(m_rats);
+		mComboShow = new ComboShow(0, aEngine);
 		clearCombo();
 		m_actionProxy.addMissListener(this);
 		m_gameoverListeners = new ArrayList<OnGameOverListener>();
@@ -121,7 +123,10 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 		m_backgroud = new Sprite(0, 0, l.getBackground());
 		this.attachChild(m_backgroud);
 		m_hScene = new HeadScene(l.getBeats().size(),mEngine);
+		m_hScene.setPosition(20, 0);
 		this.attachChild(m_hScene);
+		mComboShow.setPosition(800, 0);
+		this.attachChild(mComboShow);
 		List<Point> ratpos = l.getRats();
 		for(Point p : ratpos){
 			this.addRat(p.x, p.y);
