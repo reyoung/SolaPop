@@ -19,8 +19,9 @@ public class Scenario extends Entity {
 	List<Rat>			m_rats;
 	Sprite				m_backgroud;
 	Music				m_bgm;
-	List<Long>			m_beats;
 	ActionProxy			m_actionProxy;
+	HeadScene			m_hScene;
+	ILevel				m_curLevel;
 	
 	
 	private static final String DB_FILTER="Solapop.Scenario";
@@ -37,11 +38,11 @@ public class Scenario extends Entity {
 		mMouseHitSound = aMusic;
 		m_rats = new ArrayList<Rat>();
 		m_actionProxy = new ActionProxy(m_rats);
-		
 	}
 	public void step(){
-		
 		m_actionProxy.step();
+		int rsize=  m_curLevel.getRatSize();
+		
 	}
 	public void addRat(int x,int y){
 		Rat r= new Rat(m_rat_t, m_hithat_t,mMouseHitSound);
@@ -73,10 +74,10 @@ public class Scenario extends Entity {
 	}
 	public void loadLevel(ILevel l){
 		this.detachChildren();
-		m_hScene = new HeadScene(l.getBeats().size());
-		this.attachChild(m_hScene);
 		m_backgroud = new Sprite(0, 0, l.getBackground());
 		this.attachChild(m_backgroud);
+		m_hScene = new HeadScene(l.getBeats().size());
+		this.attachChild(m_hScene);
 		List<Point> ratpos = l.getRats();
 		for(Point p : ratpos){
 			this.addRat(p.x, p.y);
@@ -88,6 +89,6 @@ public class Scenario extends Entity {
 		if(m_bgm!=null){
 			m_bgm.play();
 		}
-		m_beats = l.getBeats();
+		m_curLevel = l;
 	}
 }
