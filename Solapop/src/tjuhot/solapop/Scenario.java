@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.anddev.andengine.audio.music.Music;
 import org.anddev.andengine.audio.sound.Sound;
-import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
@@ -20,8 +19,11 @@ public class Scenario extends Entity {
 	List<Rat>			m_rats;
 	Sprite				m_backgroud;
 	Music				m_bgm;
-	HeadScene 			m_hScene;
-	Engine				mEngine;
+	ActionProxy			m_actionProxy;
+	HeadScene			m_hScene;
+	ILevel				m_curLevel;
+	
+	
 	private static final String DB_FILTER="Solapop.Scenario";
 	
 	void debug(String msg){
@@ -29,20 +31,18 @@ public class Scenario extends Entity {
 	}
 	
 	
-	public Scenario(List<TextureRegion> rat_t,List<TextureRegion> hitrat_t,Sound aMusic,Engine aEngine){
+	public Scenario(List<TextureRegion> rat_t,List<TextureRegion> hitrat_t,Sound aMusic){
 		super(0,0);
 		m_rat_t = rat_t;
 		m_hithat_t = hitrat_t;
 		mMouseHitSound = aMusic;
-		mEngine = aEngine;
 		m_rats = new ArrayList<Rat>();
+		m_actionProxy = new ActionProxy(m_rats);
 	}
 	public void step(){
-//		for(Rat r: m_rats){
-//			r.showNext();
-//		}
-		int ms = m_bgm.getMediaPlayer().getCurrentPosition();
-		debug(String.format("Current Music Pos = %d", ms));
+		m_actionProxy.step();
+		int rsize=  m_curLevel.getRatSize();
+		
 	}
 	public void addRat(int x,int y){
 		Rat r= new Rat(m_rat_t, m_hithat_t,mMouseHitSound);
@@ -74,10 +74,10 @@ public class Scenario extends Entity {
 	}
 	public void loadLevel(ILevel l){
 		this.detachChildren();
-		m_hScene = new HeadScene(l.getBeats().size(),mEngine);
-		this.attachChild(m_hScene);
 		m_backgroud = new Sprite(0, 0, l.getBackground());
 		this.attachChild(m_backgroud);
+		m_hScene = new HeadScene(l.getBeats().size());
+		this.attachChild(m_hScene);
 		List<Point> ratpos = l.getRats();
 		for(Point p : ratpos){
 			this.addRat(p.x, p.y);
@@ -89,9 +89,6 @@ public class Scenario extends Entity {
 		if(m_bgm!=null){
 			m_bgm.play();
 		}
-		List<Long> beats = l.getBeats();
-		for(Long b: beats){
-			debug(String.format("Beats %d", b.longValue())); 
-		}
+		m_curLevel = l;
 	}
 }

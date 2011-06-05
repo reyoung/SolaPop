@@ -64,5 +64,8 @@ public class LevelStub implements ILevel {
 		Collections.sort(retv);
 		return retv;
 	}
+	public int getRatSize() {
+		return 4;
+	}
 
 }
