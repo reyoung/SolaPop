@@ -14,6 +14,8 @@ public class Rat extends Entity {
 	Sprite mSprite;
 	int mPos;
 	int mIncrese;
+	public int mx;
+	public int my;
 	private static final int INCRESE = 0;
 	private static final int DECRESE = 1;
 	private static final int HITTED = 2;
@@ -29,6 +31,8 @@ public class Rat extends Entity {
 		mTextures = aTextures;
 		mHitTextures = aHitTextures;
 		mPos = 0;
+		mx = 0;
+		my = 0;
 		mIncrese = INCRESE;
 		mSprite = new Sprite(0, 0, mTextures.get(0));
 		this.attachChild(mSprite);

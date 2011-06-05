@@ -11,9 +11,11 @@ import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.entity.util.FPSLogger;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.texture.Texture;
 import org.anddev.andengine.opengl.texture.TextureFactory;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
@@ -103,9 +105,17 @@ public class GameMain extends BaseGameActivity {
 		final Scene scene = new Scene(1);
 		final Scenario sc = new Scenario(mRatTextureRegions, mHitRatTextureRegions);
 		scene.getLastChild().attachChild(sc);
-		sc.addRat(100, 100);
-		sc.addRat(150, 150);
-		sc.addRat(200, 200);
+		scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
+			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+				float x = pSceneTouchEvent.getX();
+				float y = pSceneTouchEvent.getY();
+				sc.onClick((int)x, (int)y);
+				return false;
+			}
+		});
+		sc.addRat(0, 0);
+		sc.addRat(250, 250);
+		sc.addRat(400, 400);
 		scene.registerUpdateHandler(new TimerHandler( 0.5f , true,new ITimerCallback() {
 			public void onTimePassed(TimerHandler pTimerHandler) {
 				sc.step();
