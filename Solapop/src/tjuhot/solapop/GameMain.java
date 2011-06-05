@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.anddev.andengine.audio.music.Music;
 import org.anddev.andengine.audio.music.MusicFactory;
+import org.anddev.andengine.audio.sound.Sound;
+import org.anddev.andengine.audio.sound.SoundFactory;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
@@ -32,10 +34,11 @@ import android.util.Log;
 
 public class GameMain extends BaseGameActivity {
 
-	private static final int CAMERA_WIDTH = 720;
-	private static final int CAMERA_HEIGHT = 480;
-	private static final String DB_FILTER = "GameMain";
-	private Music mMusic;
+	private static final int CAMERA_WIDTH = 1024;
+	private static final int CAMERA_HEIGHT = 600;
+	private static final String DB_FILTER = "GameMain"; 
+	
+	private Sound mHitSound;
 	private static final String STR_RAT_PATH[] = {
 		"keng",
 		"rat1",
@@ -73,7 +76,7 @@ public class GameMain extends BaseGameActivity {
 	public void onLoadResources() {
 		loadRatTexture();
 		loadHitRatTexture();
-		loadHitMusic();
+		loadHitSound();
 	}
 	void loadHitRatTexture(){
 		mHitRatTextureRegions = new ArrayList<TextureRegion>();
@@ -101,15 +104,15 @@ public class GameMain extends BaseGameActivity {
 		}
 		debug(String.format("RatTexture size = %d", mRatTextureRegions.size()));
 	}
-	void loadHitMusic()
+	void loadHitSound()
 	{
-		MusicFactory.setAssetBasePath("mfx/");
 		try {
-			this.mMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), 
-					this, "kick_sound.mp3");
-//			this.mMusic.setLooping(true);
-		} catch (final IOException e) {
-			debug("HitMusic load Error");
+			this.mHitSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager()
+					, this, "mfx/kick_sound.mp3");
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			debug("Hit Sound Load Error");
 		}
 	}
 	
@@ -117,8 +120,9 @@ public class GameMain extends BaseGameActivity {
 		debug("OnLoadScense");
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 		final Scene scene = new Scene(1);
-		final Scenario sc = new Scenario(mRatTextureRegions, mHitRatTextureRegions,mMusic);
+		final Scenario sc = new Scenario(mRatTextureRegions, mHitRatTextureRegions,mHitSound);
 		scene.getLastChild().attachChild(sc);
+		sc.loadLevel(new LevelStub(getApplicationContext(), mEngine));
 		scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
 			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 				float x = pSceneTouchEvent.getX();
@@ -127,10 +131,7 @@ public class GameMain extends BaseGameActivity {
 				return false;
 			}
 		});
-		sc.addRat(0, 0);
-		sc.addRat(250, 250);
-		sc.addRat(400, 400);
-		scene.registerUpdateHandler(new TimerHandler( 0.2f , true,new ITimerCallback() {
+		scene.registerUpdateHandler(new TimerHandler( 0.02f , true,new ITimerCallback() {
 			public void onTimePassed(TimerHandler pTimerHandler) {
 				sc.step();
 			}
