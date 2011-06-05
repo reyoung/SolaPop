@@ -19,6 +19,7 @@ public class Scenario extends Entity {
 	List<Rat>			m_rats;
 	Sprite				m_backgroud;
 	Music				m_bgm;
+	List<Long>			m_beats;
 	ActionProxy			m_actionProxy;
 	
 	
@@ -38,13 +39,8 @@ public class Scenario extends Entity {
 		m_actionProxy = new ActionProxy(m_rats);
 		
 	}
-	int temp=0;
 	public void step(){
-		if(temp%51==0){
-			temp=0;
-			m_actionProxy.showRat(20);
-		}
-		++temp;
+		
 		m_actionProxy.step();
 	}
 	public void addRat(int x,int y){
@@ -90,9 +86,6 @@ public class Scenario extends Entity {
 		if(m_bgm!=null){
 			m_bgm.play();
 		}
-		List<Long> beats = l.getBeats();
-		for(Long b: beats){
-			debug(String.format("Beats %d", b.longValue())); 
-		}
+		m_beats = l.getBeats();
 	}
 }
