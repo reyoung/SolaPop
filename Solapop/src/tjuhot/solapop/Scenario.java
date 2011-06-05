@@ -24,8 +24,6 @@ public class Scenario extends Entity {
 	public void addRat(int x,int y){
 		Rat r= new Rat(m_rat_t, m_hithat_t);
 		r.setPosition(x, y);
-		r.mx = x;
-		r.my = y;
 		this.attachChild(r);
 		m_rats.add(r);
 	}
@@ -35,16 +33,20 @@ public class Scenario extends Entity {
 	}
 	public void onClick(int x ,int y)
 	{
+		int hittedlevel = -1;
 		for(Rat r : m_rats)
 		{
-			if((r.mx + 128) > x 
-					&& r.mx < x
-					&& r.my < y
-					&& (r.my + 128) > y)
+			int mx = (int)r.getX();
+			int my = (int)r.getY();
+			if((mx + 128) > x 
+					&& mx < x
+					&& my < y
+					&& (my + 128) > y)
 			{
-				r.hit();
+				hittedlevel = r.hit();
 				break;
 			}
 		}
+		/// process hittedlevel;
 	}
 }
