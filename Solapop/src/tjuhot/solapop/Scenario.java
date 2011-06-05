@@ -19,7 +19,7 @@ public class Scenario extends Entity {
 	List<Rat>			m_rats;
 	Sprite				m_backgroud;
 	Music				m_bgm;
-	
+	HeadScene 			m_hScene;
 	private static final String DB_FILTER="Solapop.Scenario";
 	
 	void debug(String msg){
@@ -71,6 +71,8 @@ public class Scenario extends Entity {
 	}
 	public void loadLevel(ILevel l){
 		this.detachChildren();
+		m_hScene = new HeadScene(l.getBeats().size());
+		this.attachChild(m_hScene);
 		m_backgroud = new Sprite(0, 0, l.getBackground());
 		this.attachChild(m_backgroud);
 		List<Point> ratpos = l.getRats();
