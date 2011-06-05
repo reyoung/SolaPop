@@ -28,11 +28,13 @@ import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
+import tjuhot.solapop.Scenario.OnGameOverListener;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-public class GameMain extends BaseGameActivity {
+public class GameMain extends BaseGameActivity implements OnGameOverListener {
 
 	private static final int CAMERA_WIDTH = 1024;
 	private static final int CAMERA_HEIGHT = 600;
@@ -137,6 +139,15 @@ public class GameMain extends BaseGameActivity {
 			}
 		}));
 		return scene;    
+	}
+
+	public void onGameOver() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		this.finish();
 	}
 
 }

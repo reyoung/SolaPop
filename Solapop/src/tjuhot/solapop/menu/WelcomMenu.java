@@ -1,5 +1,6 @@
 package tjuhot.solapop.menu;
 
+import tjuhot.solapop.R;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -14,11 +15,10 @@ public class WelcomMenu extends Activity {
         		try {
 					sleep(5000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				//Todo
-				SolaPopStart.this.finish();
+				/// TODO
+				WelcomMenu.this.finish();
         	}
         }.start();
     }

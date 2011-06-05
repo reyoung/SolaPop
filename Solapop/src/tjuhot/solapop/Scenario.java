@@ -32,6 +32,13 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 	Engine				mEngine;
 	
 	int					m_hitcount;
+	
+	public interface OnGameOverListener{
+		void onGameOver();
+	}
+	
+	List<OnGameOverListener> m_gameoverListeners;
+	
 	private static final String DB_FILTER="Solapop.Scenario";
 	
 	void debug(String msg){
@@ -56,7 +63,13 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 		m_actionProxy = new ActionProxy(m_rats);
 		clearCombo();
 		m_actionProxy.addMissListener(this);
+		m_gameoverListeners = new ArrayList<OnGameOverListener>();
 	}
+	void addGameoverListener(OnGameOverListener l){
+		this.m_gameoverListeners.add(l);
+	}
+	
+	
 	public void step(){
 		m_actionProxy.step();
 		int rsize=  m_curLevel.getRatSize()+m_curBeat;
@@ -128,7 +141,11 @@ public class Scenario extends Entity implements MissListener,OnCompletionListene
 		this.clearCombo();
 	}
 	public void onCompletion(MediaPlayer mp) {
-		this.detachChildren();
-		
+		ResultPage rp = new ResultPage(mEngine);
+		rp.show(1000);
+		this.attachChild(rp);
+		for(OnGameOverListener l : this.m_gameoverListeners){
+			l.onGameOver();
+		}
 	}
 }
