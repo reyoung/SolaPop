@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.anddev.andengine.audio.music.Music;
 import org.anddev.andengine.audio.sound.Sound;
+import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
@@ -20,6 +21,7 @@ public class Scenario extends Entity {
 	Sprite				m_backgroud;
 	Music				m_bgm;
 	HeadScene 			m_hScene;
+	Engine				mEngine;
 	private static final String DB_FILTER="Solapop.Scenario";
 	
 	void debug(String msg){
@@ -27,11 +29,12 @@ public class Scenario extends Entity {
 	}
 	
 	
-	public Scenario(List<TextureRegion> rat_t,List<TextureRegion> hitrat_t,Sound aMusic){
+	public Scenario(List<TextureRegion> rat_t,List<TextureRegion> hitrat_t,Sound aMusic,Engine aEngine){
 		super(0,0);
 		m_rat_t = rat_t;
 		m_hithat_t = hitrat_t;
 		mMouseHitSound = aMusic;
+		mEngine = aEngine;
 		m_rats = new ArrayList<Rat>();
 	}
 	public void step(){
@@ -71,7 +74,7 @@ public class Scenario extends Entity {
 	}
 	public void loadLevel(ILevel l){
 		this.detachChildren();
-		m_hScene = new HeadScene(l.getBeats().size());
+		m_hScene = new HeadScene(l.getBeats().size(),mEngine);
 		this.attachChild(m_hScene);
 		m_backgroud = new Sprite(0, 0, l.getBackground());
 		this.attachChild(m_backgroud);

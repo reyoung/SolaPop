@@ -120,7 +120,7 @@ public class GameMain extends BaseGameActivity {
 		debug("OnLoadScense");
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 		final Scene scene = new Scene(1);
-		final Scenario sc = new Scenario(mRatTextureRegions, mHitRatTextureRegions,mHitSound);
+		final Scenario sc = new Scenario(mRatTextureRegions, mHitRatTextureRegions,mHitSound,mEngine);
 		scene.getLastChild().attachChild(sc);
 		sc.loadLevel(new LevelStub(getApplicationContext(), mEngine));
 		scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
