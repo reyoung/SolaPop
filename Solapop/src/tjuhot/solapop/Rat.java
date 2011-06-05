@@ -2,6 +2,7 @@ package tjuhot.solapop;
 
 import java.util.List;
 
+import org.anddev.andengine.audio.music.Music;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
@@ -11,6 +12,7 @@ import android.util.Log;
 public class Rat extends Entity {
 	List<TextureRegion> mTextures;
 	List<TextureRegion> mHitTextures;
+	Music mMusic;
 	Sprite mSprite;
 	int mPos;
 	int mIncrese;
@@ -24,10 +26,11 @@ public class Rat extends Entity {
 		Log.d(DB_FILTER, msg);
 	}
 
-	public Rat(List<TextureRegion> aTextures, List<TextureRegion> aHitTextures) {
+	public Rat(List<TextureRegion> aTextures, List<TextureRegion> aHitTextures,Music aMusic) {
 		super(0, 0);
 		mTextures = aTextures;
 		mHitTextures = aHitTextures;
+		mMusic = aMusic;
 		mPos = 0;
 		mIncrese = INCRESE;
 		mSprite = new Sprite(0, 0, mTextures.get(0));
@@ -48,14 +51,15 @@ public class Rat extends Entity {
 		}
 		if (mPos <= 0) {
 			mPos = 0;
-			//mIncrese = INCRESE;
-			mIncrese = NORAT;
+			mIncrese = INCRESE;
+			//mIncrese = NORAT;
 		}
 		this.detachChild(mSprite);
 		if (HITTED == mIncrese) {
 			mIncrese = DECRESE;
 			if(mPos ==0)
 				return;
+			
 			mSprite = new Sprite(0, 0, mHitTextures.get(mPos-1));
 		} else
 			mSprite = new Sprite(0, 0, mTextures.get(mPos));
@@ -66,6 +70,7 @@ public class Rat extends Entity {
 		if(mIncrese == NORAT){
 			return 0;
 		}
+		this.mMusic.play();
 		mIncrese = HITTED;
 		return mPos;
 	}
