@@ -73,6 +73,8 @@ public class Scenario extends Entity {
 	}
 	public void loadLevel(ILevel l){
 		this.detachChildren();
+		m_hScene = new HeadScene(l.getBeats().size());
+		this.attachChild(m_hScene);
 		m_backgroud = new Sprite(0, 0, l.getBackground());
 		this.attachChild(m_backgroud);
 		List<Point> ratpos = l.getRats();
