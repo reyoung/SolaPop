@@ -14,12 +14,10 @@ public class Rat extends Entity {
 	Sprite mSprite;
 	int mPos;
 	int mIncrese;
-//	public int mx;	//!使用Entity本身的pos！
-//	public int my;
 	private static final int INCRESE = 0;
 	private static final int DECRESE = 1;
 	private static final int HITTED = 2;
-
+	private static final int NORAT = 3;
 	private static final String DB_FILTER = "Solapop.Rat";
 
 	void debug(String msg) {
@@ -31,8 +29,6 @@ public class Rat extends Entity {
 		mTextures = aTextures;
 		mHitTextures = aHitTextures;
 		mPos = 0;
-//		mx = 0;
-//		my = 0;
 		mIncrese = INCRESE;
 		mSprite = new Sprite(0, 0, mTextures.get(0));
 		this.attachChild(mSprite);
@@ -40,6 +36,7 @@ public class Rat extends Entity {
 
 	public void showNext() {
 		debug("Show Next");
+		if(mIncrese == NORAT)return;
 		if (mIncrese == INCRESE) {
 			++mPos;
 		} else if (mIncrese == DECRESE) {
@@ -51,7 +48,8 @@ public class Rat extends Entity {
 		}
 		if (mPos <= 0) {
 			mPos = 0;
-			mIncrese = INCRESE;
+			//mIncrese = INCRESE;
+			mIncrese = NORAT;
 		}
 		this.detachChild(mSprite);
 		if (HITTED == mIncrese) {
@@ -65,6 +63,9 @@ public class Rat extends Entity {
 	}
 
 	public int hit() {
+		if(mIncrese == NORAT){
+			return 0;
+		}
 		mIncrese = HITTED;
 		return mPos;
 	}
