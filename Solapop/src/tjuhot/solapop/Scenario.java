@@ -9,10 +9,12 @@ import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
+import tjuhot.solapop.ActionProxy.MissListener;
+
 import android.graphics.Point;
 import android.util.Log;
 
-public class Scenario extends Entity {
+public class Scenario extends Entity implements MissListener {
 	List<TextureRegion> m_rat_t;
 	List<TextureRegion> m_hithat_t;
 	Sound				mMouseHitSound;
@@ -22,6 +24,9 @@ public class Scenario extends Entity {
 	ActionProxy			m_actionProxy;
 	HeadScene			m_hScene;
 	ILevel				m_curLevel;
+	int					m_curBeat;
+	
+	int					m_hitcount;
 	
 	
 	private static final String DB_FILTER="Solapop.Scenario";
@@ -30,6 +35,12 @@ public class Scenario extends Entity {
 		Log.d(DB_FILTER, msg);
 	}
 	
+	public void increseCombo(){
+		++m_hitcount;
+	}
+	public void clearCombo(){
+		m_hitcount = 0;
+	}
 	
 	public Scenario(List<TextureRegion> rat_t,List<TextureRegion> hitrat_t,Sound aMusic){
 		super(0,0);
@@ -38,11 +49,23 @@ public class Scenario extends Entity {
 		mMouseHitSound = aMusic;
 		m_rats = new ArrayList<Rat>();
 		m_actionProxy = new ActionProxy(m_rats);
+		clearCombo();
+		m_actionProxy.addMissListener(this);
 	}
 	public void step(){
+		int rsize=  m_curLevel.getRatSize()+m_curBeat;
+		List<Long> beats = m_curLevel.getBeats();
+		int mpos = this.m_bgm.getMediaPlayer().getCurrentPosition();
+		for(int i=m_curBeat;i<rsize;++i){
+			int pos = beats.get(i).intValue();
+			if(pos-mpos<100){
+				m_actionProxy.showRat(50);
+				++m_curBeat;
+			}else{
+				break;
+			}
+		}
 		m_actionProxy.step();
-		int rsize=  m_curLevel.getRatSize();
-		
 	}
 	public void addRat(int x,int y){
 		Rat r= new Rat(m_rat_t, m_hithat_t,mMouseHitSound);
@@ -70,7 +93,10 @@ public class Scenario extends Entity {
 				break;
 			}
 		}
-		/// process hittedlevel;
+		if(hittedlevel!=-1){
+			this.m_hScene.hitLevelProc(hittedlevel);
+			increseCombo();
+		}
 	}
 	public void loadLevel(ILevel l){
 		this.detachChildren();
@@ -90,5 +116,11 @@ public class Scenario extends Entity {
 			m_bgm.play();
 		}
 		m_curLevel = l;
+		m_curBeat = 0;
+	}
+
+
+	public void onMiss() {
+		this.clearCombo();
 	}
 }
