@@ -27,7 +27,7 @@ public class Scenario extends Entity implements MissListener{
 	ILevel				m_curLevel;
 	int					m_curBeat;	
 	Engine				mEngine;
-	
+	ComboShow			mComboShow;
 	int					m_hitcount;
 	private static final String DB_FILTER="Solapop.Scenario";
 	
@@ -36,9 +36,11 @@ public class Scenario extends Entity implements MissListener{
 	}
 	public void increseCombo(){
 		++m_hitcount;
+		mComboShow.onComboChanged(m_hitcount);
 	}
 	public void clearCombo(){
 		m_hitcount = 0;
+		mComboShow.clearCombo();
 	}
 	
 	public Scenario(List<TextureRegion> rat_t,List<TextureRegion> hitrat_t,
@@ -50,6 +52,7 @@ public class Scenario extends Entity implements MissListener{
 		mEngine = aEngine;
 		m_rats = new ArrayList<Rat>();
 		m_actionProxy = new ActionProxy(m_rats);
+		mComboShow = new ComboShow(0, aEngine);
 		clearCombo();
 		m_actionProxy.addMissListener(this);
 	}
@@ -104,7 +107,10 @@ public class Scenario extends Entity implements MissListener{
 		m_backgroud = new Sprite(0, 0, l.getBackground());
 		this.attachChild(m_backgroud);
 		m_hScene = new HeadScene(l.getBeats().size(),mEngine);
+		m_hScene.setPosition(20, 0);
 		this.attachChild(m_hScene);
+		mComboShow.setPosition(800, 0);
+		this.attachChild(mComboShow);
 		List<Point> ratpos = l.getRats();
 		for(Point p : ratpos){
 			this.addRat(p.x, p.y);
