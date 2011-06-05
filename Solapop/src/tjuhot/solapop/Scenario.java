@@ -8,14 +8,17 @@ import org.anddev.andengine.audio.sound.Sound;
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.Entity;
 import org.anddev.andengine.entity.sprite.Sprite;
+import org.anddev.andengine.entity.text.Text;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 import tjuhot.solapop.ActionProxy.MissListener;
 
 import android.graphics.Point;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.util.Log;
 
-public class Scenario extends Entity implements MissListener{
+public class Scenario extends Entity implements MissListener,OnCompletionListener{
 	List<TextureRegion> m_rat_t;
 	List<TextureRegion> m_hithat_t;
 	Sound				mMouseHitSound;
@@ -36,6 +39,7 @@ public class Scenario extends Entity implements MissListener{
 	}
 	public void increseCombo(){
 		++m_hitcount;
+		
 	}
 	public void clearCombo(){
 		m_hitcount = 0;
@@ -116,10 +120,15 @@ public class Scenario extends Entity implements MissListener{
 		if(m_bgm!=null){
 			m_bgm.play();
 		}
+		m_bgm.setOnCompletionListener(this);
 		m_curLevel = l;
 		m_curBeat = 0;
 	}
 	public void onMiss() {
 		this.clearCombo();
+	}
+	public void onCompletion(MediaPlayer mp) {
+		this.detachChildren();
+		
 	}
 }
