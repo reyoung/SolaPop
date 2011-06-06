@@ -1,4 +1,4 @@
-package tjuhot.solapop.menu;
+package tjuhot.solapop;
 
 import javax.microedition.khronos.opengles.GL10;
 

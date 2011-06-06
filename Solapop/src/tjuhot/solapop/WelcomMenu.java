@@ -1,7 +1,6 @@
 package tjuhot.solapop;
 
 import tjuhot.solapop.R;
-import tjuhot.solapop.menu.GameMenu;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ public class WelcomMenu extends Activity {
         new Thread(){
         	public void run(){
         		try {
-					sleep(5000);
+					sleep(2000);
 					//change
 				} catch (InterruptedException e) {
 					e.printStackTrace();
