@@ -2,4 +2,9 @@
 <resources>
     <string name="hello">Hello World, GameMain!</string>
     <string name="app_name">Solapop</string>
+    <string name="WYM">3008128047，王一敏</string>
+    <string name="XDW">3008218048，徐大为</string>
+    <string name="YQ">3008218050，杨群</string>
+    <string name="YY">3008218052，于洋</string>
+    <string name="credit">Credits:</string>
 </resources>
