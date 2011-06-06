@@ -37,7 +37,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class GameMain extends BaseGameActivity implements OnGameOverListener {
-
 	private static final int CAMERA_WIDTH = 1024;
 	private static final int CAMERA_HEIGHT = 600;
 	private static final String DB_FILTER = "GameMain"; 
@@ -70,6 +69,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 	}
 
 	public Engine onLoadEngine() {
+	public Engine onLoadEngine() { 
 		//Intent intent=getIntent();
         // 从Intent中获得Bundle对象
         //Bundle b=intent.getExtras();
