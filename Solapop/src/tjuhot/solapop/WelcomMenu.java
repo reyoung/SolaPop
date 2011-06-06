@@ -14,7 +14,7 @@ public class WelcomMenu extends Activity {
         new Thread(){
         	public void run(){
         		try {
-					sleep(2000);
+					sleep(5000);
 					//change
 				} catch (InterruptedException e) {
 					e.printStackTrace();
