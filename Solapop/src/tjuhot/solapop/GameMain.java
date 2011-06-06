@@ -1,6 +1,7 @@
 package tjuhot.solapop;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,25 +40,19 @@ import android.util.Log;
 public class GameMain extends BaseGameActivity implements OnGameOverListener {
 	private static final int CAMERA_WIDTH = 1024;
 	private static final int CAMERA_HEIGHT = 600;
-	private static final String DB_FILTER = "GameMain"; 
-	private String filepath; 
+	private static final String DB_FILTER = "GameMain";
+	private String filepath;
+	private boolean hasCard;
 	private Sound mHitSound;
-	private static final String STR_RAT_PATH[] = {
-		"keng",
-		"rat1",
-		"rat2",
-		"rat3",
-		"rat4",
-		"rat5",
-		"rat6"
-	};
+	private static final String STR_RAT_PATH[] = { "keng", "rat1", "rat2",
+			"rat3", "rat4", "rat5", "rat6" };
 	public static final String STR_HITRAT = "hitrat";
-	
+
 	List<TextureRegion> mRatTextureRegions;
-	List<Texture>       mRatTextures;
-	
+	List<Texture> mRatTextures;
+
 	List<TextureRegion> mHitRatTextureRegions;
-	List<Texture>       mHitRatTextures;
+	List<Texture> mHitRatTextures;
 	Camera mCamera;
 
 	void debug(String msg) {
@@ -69,17 +64,21 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 	}
 
 	public Engine onLoadEngine() {
-	public Engine onLoadEngine() { 
-		//Intent intent=getIntent();
-        // 从Intent中获得Bundle对象
-        //Bundle b=intent.getExtras();
-     // 从Bundle中获得name
-        //filepath =b.getString("filepath");
-        if(filepath == null || filepath.equals(""))
-        {
-        	filepath = "res/raw/summer.slp";
-        }
-        filepath = "res/raw/summer.slp";
+		Intent intent = getIntent();
+		// 从Intent中获得Bundle对象
+		if(intent != null)
+		{
+			Bundle b = intent.getExtras();
+			if(b != null)
+			{
+				filepath = b.getString("filepath");
+			}
+		}
+		// 从Bundle中获得name
+		if (filepath == null || filepath.equals("")) {
+			filepath = "mfx/summer.slp";
+		}
+		filepath = "mfx/summer.slp";
 		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 		return new Engine(
 				new EngineOptions(true, ScreenOrientation.LANDSCAPE,
@@ -92,25 +91,29 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 		loadHitRatTexture();
 		loadHitSound();
 	}
-	void loadHitRatTexture(){
+
+	void loadHitRatTexture() {
 		mHitRatTextureRegions = new ArrayList<TextureRegion>();
 		mHitRatTextures = new ArrayList<Texture>();
-		for(int i=1;i<STR_RAT_PATH.length;++i){
+		for (int i = 1; i < STR_RAT_PATH.length; ++i) {
 			Texture t = new Texture(128, 128);
-			TextureRegion temp = TextureRegionFactory.createFromAsset(t
-					, getApplicationContext(), String.format("gfx/%s%d.png", STR_HITRAT,i),0,0);
+			TextureRegion temp = TextureRegionFactory.createFromAsset(t,
+					getApplicationContext(),
+					String.format("gfx/%s%d.png", STR_HITRAT, i), 0, 0);
 			mHitRatTextureRegions.add(temp);
 			mHitRatTextures.add(t);
 			this.mEngine.getTextureManager().loadTexture(t);
 		}
 	}
-	void loadRatTexture(){
+
+	void loadRatTexture() {
 		mRatTextureRegions = new ArrayList<TextureRegion>();
 		mRatTextures = new ArrayList<Texture>();
-		for(int i=0;i<STR_RAT_PATH.length;++i){
+		for (int i = 0; i < STR_RAT_PATH.length; ++i) {
 			Texture tempt = new Texture(128, 128);
-			TextureRegion temp = TextureRegionFactory.createFromAsset(tempt
-					, getApplicationContext(), String.format("gfx/%s.png", STR_RAT_PATH[i]),0,0);
+			TextureRegion temp = TextureRegionFactory.createFromAsset(tempt,
+					getApplicationContext(),
+					String.format("gfx/%s.png", STR_RAT_PATH[i]), 0, 0);
 			mRatTextureRegions.add(temp);
 			mRatTextures.add(tempt);
 			this.mEngine.getTextureManager().loadTexture(tempt);
@@ -118,40 +121,44 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 		}
 		debug(String.format("RatTexture size = %d", mRatTextureRegions.size()));
 	}
-	void loadHitSound()
-	{
+
+	void loadHitSound() {
 		try {
-			this.mHitSound = SoundFactory.createSoundFromAsset(this.mEngine.getSoundManager()
-					, this, "mfx/kick_sound.mp3");
-			
+			this.mHitSound = SoundFactory.createSoundFromAsset(
+					this.mEngine.getSoundManager(), this, "mfx/kick_sound.mp3");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			debug("Hit Sound Load Error");
 		}
 	}
-	
+
 	public Scene onLoadScene() {
 		debug("OnLoadScense");
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 		final Scene scene = new Scene(1);
-		final Scenario sc = new Scenario(mRatTextureRegions, mHitRatTextureRegions,mHitSound,mEngine,getApplicationContext());
+		final Scenario sc = new Scenario(mRatTextureRegions,
+				mHitRatTextureRegions, mHitSound, mEngine,
+				getApplicationContext());
 		scene.getLastChild().attachChild(sc);
-		sc.loadLevel(new Level(getApplicationContext(), mEngine,filepath));
+		sc.loadLevel(new Level(getApplicationContext(), mEngine, filepath));
 		scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
-			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+			public boolean onSceneTouchEvent(Scene pScene,
+					TouchEvent pSceneTouchEvent) {
 				float x = pSceneTouchEvent.getX();
 				float y = pSceneTouchEvent.getY();
-				sc.onClick((int)x, (int)y);
+				sc.onClick((int) x, (int) y);
 				return false;
 			}
 		});
 		sc.addGameoverListener(this);
-		scene.registerUpdateHandler(new TimerHandler( 0.02f , true,new ITimerCallback() {
-			public void onTimePassed(TimerHandler pTimerHandler) {
-				sc.step();
-			}
-		}));
-		return scene;    
+		scene.registerUpdateHandler(new TimerHandler(0.02f, true,
+				new ITimerCallback() {
+					public void onTimePassed(TimerHandler pTimerHandler) {
+						sc.step();
+					}
+				}));
+		return scene;
 	}
 
 	public void onGameOver() {
