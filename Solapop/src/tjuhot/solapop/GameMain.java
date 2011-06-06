@@ -29,8 +29,10 @@ import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 import tjuhot.solapop.Scenario.OnGameOverListener;
+import tjuhot.solapop.music.Level;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -39,7 +41,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 	private static final int CAMERA_WIDTH = 1024;
 	private static final int CAMERA_HEIGHT = 600;
 	private static final String DB_FILTER = "GameMain"; 
-	
+	private String filepath; 
 	private Sound mHitSound;
 	private static final String STR_RAT_PATH[] = {
 		"keng",
@@ -68,6 +70,16 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 	}
 
 	public Engine onLoadEngine() {
+		//Intent intent=getIntent();
+        // 从Intent中获得Bundle对象
+        //Bundle b=intent.getExtras();
+     // 从Bundle中获得name
+        //filepath =b.getString("filepath");
+        if(filepath == null || filepath.equals(""))
+        {
+        	filepath = "res/raw/summer.slp";
+        }
+        filepath = "res/raw/summer.slp";
 		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 		return new Engine(
 				new EngineOptions(true, ScreenOrientation.LANDSCAPE,
@@ -124,7 +136,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 		final Scene scene = new Scene(1);
 		final Scenario sc = new Scenario(mRatTextureRegions, mHitRatTextureRegions,mHitSound,mEngine,getApplicationContext());
 		scene.getLastChild().attachChild(sc);
-		sc.loadLevel(new LevelStub(getApplicationContext(), mEngine));
+		sc.loadLevel(new Level(getApplicationContext(), mEngine,filepath));
 		scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
 			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 				float x = pSceneTouchEvent.getX();

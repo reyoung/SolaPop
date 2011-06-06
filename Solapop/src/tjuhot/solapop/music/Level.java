@@ -15,6 +15,7 @@ import org.anddev.andengine.opengl.texture.region.TextureRegionFactory;
 import tjuhot.solapop.ILevel;
 import android.content.Context;
 import android.graphics.Point;
+import android.util.Log;
 
 public class Level implements ILevel{
 	Context m_context;
@@ -27,21 +28,26 @@ public class Level implements ILevel{
 		m_engine = eng;
 		m_slpFileName=slpFileName;
 		List<Long > retv= new ArrayList<Long>();
-		IMusic music=new SlpFileReader(m_slpFileName);
+		SlpFileReader music=new SlpFileReader(m_slpFileName);
+		Log.d("BeatTime",slpFileName);
+		Log.d("BeatTime",music.getArtist());
 		int beatSize=music.beatSize();
+		Log.d("BeatTime",Integer.toString(beatSize));
 		for(int i=0;i<beatSize;++i){
 			long l=music.BeatTime(i);
+			Log.d("BeatTime",Long.toString(l));
 			retv.add(l);
 		}
 		m_music = new File(slpFileName).getParent()+"/"+music.getMusic();
+//		m_music = "res/raw/summer1.mp3";
 		m_beats = retv;
 	}
 	public Music getMusic() {
 		try {
 			File musicFile=new File(m_music);
 			Music retv = MusicFactory.createMusicFromFile(m_engine.getMusicManager(), m_context, musicFile);
-//			Music retv =  MusicFactory.createFromFile(m_engine.getMusicManager()
-//					, m_context, m_music);
+			//Music retv =  MusicFactory.createMusicFromAsset(m_engine.getMusicManager()
+			//		, m_context, m_music);
 			assert(retv!=null);
 			return retv;
 		} catch (IllegalStateException e) {
