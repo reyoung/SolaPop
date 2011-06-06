@@ -34,8 +34,15 @@ public class FileSelector extends ListActivity {
 		        if(!file.exists()) 
 		         file.mkdir();
 		  } else {
-			  Toast.makeText(this, "sdcard not exist,choose slp file yourslef!", Toast.LENGTH_LONG).show();
+			  Toast.makeText(this, "sdcard not exist!", Toast.LENGTH_LONG).show();
 			  homePath="/";
+			  Intent intent= new Intent(FileSelector.this,GameMain.class);
+				Bundle bundle=new Bundle();
+				bundle.putBoolean("isSDCard", false);
+				bundle.putString("filepath", homePath);
+				intent.putExtras(bundle);
+				startActivity(intent);
+				this.finish();
 		  }
 		
 		  filePath = homePath;
@@ -53,6 +60,7 @@ public class FileSelector extends ListActivity {
 					.show();
 			Intent intent= new Intent(FileSelector.this,GameMain.class);
 			Bundle bundle=new Bundle();
+			bundle.putBoolean("isSDCard", true);
 			bundle.putString("filepath", filePath);
 			intent.putExtras(bundle);
 			startActivity(intent);
