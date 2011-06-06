@@ -52,7 +52,11 @@ public class FileSelector extends ListActivity {
 			Toast.makeText(FileSelector.this, ""+filePath, Toast.LENGTH_SHORT)
 					.show();
 			Intent intent= new Intent(FileSelector.this,GameMain.class);
+			Bundle bundle=new Bundle();
+			bundle.putString("filepath", filePath);
+			intent.putExtras(bundle);
 			startActivity(intent);
+			this.finish();
 		}
 	}
 
