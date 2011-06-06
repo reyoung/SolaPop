@@ -39,7 +39,6 @@ public class Level implements ILevel{
 			retv.add(l);
 		}
 		m_music = new File(slpFileName).getParent()+"/"+music.getMusic();
-//		m_music = "res/raw/summer1.mp3";
 		m_beats = retv;
 	}
 	public Music getMusic() {
