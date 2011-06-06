@@ -19,7 +19,7 @@ public class SlpFileReader implements IMusic{
     private Double offset = null;
     private Double time = null;
     private Double[][] bpm = null;
-    private List<slpAttribute<Integer, Boolean>> slpNoteList = new ArrayList<slpAttribute<Integer, Boolean>>();
+    private List<slpAttribute<Integer, Boolean,Integer>> slpNoteList = new ArrayList<slpAttribute<Integer, Boolean,Integer>>();
     private List<beatAttribute<Integer, Double>> beatList = new ArrayList<beatAttribute<Integer, Double>>();
 
     public SlpFileReader(String slpFileName,Context context) throws IOException{
@@ -35,6 +35,7 @@ public class SlpFileReader implements IMusic{
             br.close();
         } catch (IOException e) {
         }
+        int divide=1;
         int count = 1;
         for (int i = 0; i < list.size(); i++) {
             String conf = list.get(i).toString();
@@ -84,8 +85,13 @@ public class SlpFileReader implements IMusic{
                         bpm[i1][1] = Double.parseDouble(subequ[1]);
                     }
                 }
-            } else if (conf.startsWith("0") || conf.startsWith("1")) {
-                slpAttribute<Integer, Boolean> slpAttribute = new slpAttribute<Integer, Boolean>();
+            }else if (conf.startsWith(",")) {
+                String subcom = conf.substring(1,2);
+                divide=Integer.parseInt(subcom);
+
+            }  
+            else if (conf.startsWith("0") || conf.startsWith("1")) {
+                slpAttribute<Integer, Boolean,Integer> slpAttribute = new slpAttribute<Integer, Boolean,Integer>();
                 if (conf.equals("0000")) {
                     slpAttribute.BeatOrNo = false;
                 } else {
@@ -93,28 +99,31 @@ public class SlpFileReader implements IMusic{
                 }
                 //System.out.println(slpAttribute.BeatOrNo);
                 slpAttribute.index = count;
+                slpAttribute.divide=divide;
                 //System.out.println(slpAttribute.index);
                 slpNoteList.add(slpAttribute);
                 count++;
             }
         }
         int beatCount = 0;
+        Double timeCount=offset;
         for (int i = 0; i < slpNoteList.size(); ++i) {
             beatAttribute<Integer, Double> beatAttribute = new beatAttribute<Integer, Double>();
+//            if (Double.parseDouble(String.valueOf(bpm[1][0])) == -1.0) {
+            	timeCount = timeCount + (slpNoteList.get(i).index-1) * 60 / (bpm[0][1]*slpNoteList.get(i).divide);
+                //System.out.println(beatAttribute.Time);
+//            } else {
+//                //System.out.println("F2");
+//                if ((slpNoteList.get(i).index-1) < bpm[1][0].intValue()) {
+//                    beatAttribute.Time = offset + (slpNoteList.get(i).index-1) * 60 / bpm[0][1];
+//                } else {
+//                    beatAttribute.Time = bpm[1][0].intValue() * 60 / bpm[0][1]
+//                            + (((slpNoteList.get(i).index-1) - bpm[1][0].intValue()) * 60 / bpm[1][1]);
+//                }
+//            }
             if (slpNoteList.get(i).BeatOrNo == true) {
                 beatAttribute.index = beatCount;
-                if (Double.parseDouble(String.valueOf(bpm[1][0])) == -1.0) {
-                    beatAttribute.Time = offset + (slpNoteList.get(i).index-1) * 60 / bpm[0][1];
-                    //System.out.println(beatAttribute.Time);
-                } else {
-                    //System.out.println("F2");
-                    if ((slpNoteList.get(i).index-1) < bpm[1][0].intValue()) {
-                        beatAttribute.Time = offset + (slpNoteList.get(i).index-1) * 60 / bpm[0][1];
-                    } else {
-                        beatAttribute.Time = bpm[1][0].intValue() * 60 / bpm[0][1]
-                                + (((slpNoteList.get(i).index-1) - bpm[1][0].intValue()) * 60 / bpm[1][1]);
-                    }
-                }
+                beatAttribute.Time=timeCount;
                 beatList.add(beatAttribute);
                 beatCount++;
             }
@@ -133,6 +142,7 @@ public class SlpFileReader implements IMusic{
             br.close();
         } catch (IOException e) {
         }
+        int divide=1;
         int count = 1;
         for (int i = 0; i < list.size(); i++) {
             String conf = list.get(i).toString();
@@ -182,8 +192,13 @@ public class SlpFileReader implements IMusic{
                         bpm[i1][1] = Double.parseDouble(subequ[1]);
                     }
                 }
-            } else if (conf.startsWith("0") || conf.startsWith("1")) {
-                slpAttribute<Integer, Boolean> slpAttribute = new slpAttribute<Integer, Boolean>();
+            }else if (conf.startsWith(",")) {
+                String subcom = conf.substring(1,2);
+                divide=Integer.parseInt(subcom);
+
+            }  
+            else if (conf.startsWith("0") || conf.startsWith("1")) {
+                slpAttribute<Integer, Boolean,Integer> slpAttribute = new slpAttribute<Integer, Boolean,Integer>();
                 if (conf.equals("0000")) {
                     slpAttribute.BeatOrNo = false;
                 } else {
@@ -191,28 +206,31 @@ public class SlpFileReader implements IMusic{
                 }
                 //System.out.println(slpAttribute.BeatOrNo);
                 slpAttribute.index = count;
+                slpAttribute.divide=divide;
                 //System.out.println(slpAttribute.index);
                 slpNoteList.add(slpAttribute);
                 count++;
             }
         }
         int beatCount = 0;
+        Double timeCount=offset;
         for (int i = 0; i < slpNoteList.size(); ++i) {
             beatAttribute<Integer, Double> beatAttribute = new beatAttribute<Integer, Double>();
+//            if (Double.parseDouble(String.valueOf(bpm[1][0])) == -1.0) {
+            	timeCount = timeCount + (slpNoteList.get(i).index-1) * 60 / (bpm[0][1]*slpNoteList.get(i).divide);
+                //System.out.println(beatAttribute.Time);
+//            } else {
+//                //System.out.println("F2");
+//                if ((slpNoteList.get(i).index-1) < bpm[1][0].intValue()) {
+//                    beatAttribute.Time = offset + (slpNoteList.get(i).index-1) * 60 / bpm[0][1];
+//                } else {
+//                    beatAttribute.Time = bpm[1][0].intValue() * 60 / bpm[0][1]
+//                            + (((slpNoteList.get(i).index-1) - bpm[1][0].intValue()) * 60 / bpm[1][1]);
+//                }
+//            }
             if (slpNoteList.get(i).BeatOrNo == true) {
                 beatAttribute.index = beatCount;
-                if (Double.parseDouble(String.valueOf(bpm[1][0])) == -1.0) {
-                    beatAttribute.Time = offset + (slpNoteList.get(i).index-1) * 60 / bpm[0][1];
-                    //System.out.println(beatAttribute.Time);
-                } else {
-                    //System.out.println("F2");
-                    if ((slpNoteList.get(i).index-1) < bpm[1][0].intValue()) {
-                        beatAttribute.Time = offset + (slpNoteList.get(i).index-1) * 60 / bpm[0][1];
-                    } else {
-                        beatAttribute.Time = bpm[1][0].intValue() * 60 / bpm[0][1]
-                                + (((slpNoteList.get(i).index-1) - bpm[1][0].intValue()) * 60 / bpm[1][1]);
-                    }
-                }
+                beatAttribute.Time=timeCount;
                 beatList.add(beatAttribute);
                 beatCount++;
             }
