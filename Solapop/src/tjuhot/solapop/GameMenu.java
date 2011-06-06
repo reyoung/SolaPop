@@ -36,7 +36,7 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 	private static final int CAMERA_WIDTH = 512;
 	private static final int CAMERA_HEIGHT = 300;
 	private static final int BUTTON_WIDTH = 150;
-	private static final int BUTTON_HEIGHT = 50;
+	private static final int BUTTON_HEIGHT = 220;
 	protected static final int MENU_OK = 0;
 	protected static final int MENU_RESET = MENU_OK + 1;
 	protected static final int MENU_QUIT = MENU_RESET + 1;
@@ -69,11 +69,11 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 
 
 	public void onLoadResources() {
-		this.mTexture = new Texture(64, 64,
+		this.mTexture = new Texture(1024, 1024,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 		this.mFaceTextureRegion = TextureRegionFactory.createFromAsset(
-				this.mTexture, this, "gfx/face_box_menu.png", 0, 0);
+				this.mTexture, this, "gfx/background.png", 0, 0);
 
 		this.mEngine.getTextureManager().loadTexture(this.mTexture);
 		
@@ -103,10 +103,10 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 				0.8784f));
 
 		
-//		final Sprite face = new Sprite(0,50, this.mFaceTextureRegion);
+		final Sprite face = new Sprite(0,0, this.mFaceTextureRegion);
 //		face.registerEntityModifier(new MoveModifier(30, 0, CAMERA_WIDTH
 //				- face.getWidth(), 0, CAMERA_HEIGHT - face.getHeight()));
-//		this.mMainScene.getLastChild().attachChild(face);
+		this.mMainScene.getLastChild().attachChild(face);
 		
 		final Sprite button1 = new Sprite(BUTTON_WIDTH,BUTTON_HEIGHT, this.mMenuOKTextureRegion);
 		this.mMainScene.getLastChild().attachChild(button1);
@@ -118,16 +118,11 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 					Intent intent= new Intent(GameMenu.this,FileSelector.class);
 					startActivity(intent);
 				}
-				else if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+220)&&y>(BUTTON_HEIGHT+100)&&y<(BUTTON_HEIGHT+100+50)){
-					Intent intent= new Intent(GameMenu.this,AboutMenu.class);
-					startActivity(intent);					
-				}
+				
 				return false;
 			}
 		});
 		
-		final Sprite button3 = new Sprite(BUTTON_WIDTH,BUTTON_HEIGHT+100, this.mMenuResetTextureRegion);
-		this.mMainScene.getLastChild().attachChild(button3);
 		
 	
 		
