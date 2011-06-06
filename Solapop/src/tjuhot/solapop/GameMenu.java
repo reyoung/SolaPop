@@ -118,23 +118,17 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 					Intent intent= new Intent(GameMenu.this,FileSelector.class);
 					startActivity(intent);
 				}
+				else if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+256)&&y>(BUTTON_HEIGHT+100)&&y<(BUTTON_HEIGHT+100+128)){
+					System.exit(0);
+				}
 				return false;
 			}
 		});
 		
 		
-//		final Sprite button2 = new Sprite(BUTTON_WIDTH,BUTTON_HEIGHT+100, this.mMenuQuitTextureRegion);
-//		this.mMainScene.getLastChild().attachChild(button2);
-//		mMainScene.setOnSceneTouchListener(new IOnSceneTouchListener() {
-//			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-//				float x = pSceneTouchEvent.getX();
-//				float y = pSceneTouchEvent.getY();
-//				if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+256)&&y>(BUTTON_HEIGHT+100)&&y<(BUTTON_HEIGHT+128+100)){
-//					System.exit(0);
-//				}
-//				return false;
-//			}
-//		});
+		final Sprite button2 = new Sprite(BUTTON_WIDTH,BUTTON_HEIGHT+100, this.mMenuQuitTextureRegion);
+		this.mMainScene.getLastChild().attachChild(button2);
+	
 		
 
 		return this.mMainScene;
