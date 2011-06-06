@@ -35,7 +35,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class GameMain extends BaseGameActivity implements OnGameOverListener {
-
 	private static final int CAMERA_WIDTH = 1024;
 	private static final int CAMERA_HEIGHT = 600;
 	private static final String DB_FILTER = "GameMain"; 
@@ -67,7 +66,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 
 	}
 
-	public Engine onLoadEngine() {
+	public Engine onLoadEngine() { 
 		this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 		return new Engine(
 				new EngineOptions(true, ScreenOrientation.LANDSCAPE,
