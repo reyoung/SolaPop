@@ -47,10 +47,7 @@ public class Level implements ILevel{
 		{
 			try {
 				music = new SlpFileReader(m_slpFileName, app);
-//				Log.d("BeatTime", slpFileName);
-//				Log.d("BeatTime", music.getArtist());
 				int beatSize = music.beatSize();
-//				Log.d("BeatTime", Integer.toString(beatSize));
 				for (int i = 0; i < beatSize; ++i) {
 					long l = music.BeatTime(i);
 					retv.add(l);

@@ -42,7 +42,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 	private static final int CAMERA_HEIGHT = 600;
 	private static final String DB_FILTER = "GameMain";
 	private String filepath;
-	private boolean hasCard = false;
+	private boolean hasCard;
 	private Sound mHitSound;
 	private static final String STR_RAT_PATH[] = { "keng", "rat1", "rat2",
 			"rat3", "rat4", "rat5", "rat6" };
@@ -64,6 +64,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 	}
 
 	public Engine onLoadEngine() {
+		hasCard = false;
 		Intent intent = getIntent();
 		// 从Intent中获得Bundle对象
 		if(intent != null)
@@ -75,7 +76,6 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 				hasCard = b.getBoolean("isSDCard");
 			}
 		}
-		// 从Bundle中获得name
 		if (filepath == null || filepath.equals("")) {
 			filepath = "mfx/summer.slp";
 		}
