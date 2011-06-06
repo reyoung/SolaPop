@@ -1,9 +1,12 @@
 package tjuhot.solapop;
+
 import tjuhot.solapop.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 public class AboutMenu extends Activity{
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,8 +20,6 @@ public class AboutMenu extends Activity{
 					e.printStackTrace();
 				}
 				/// TODO
-				Intent intent= new Intent(AboutMenu.this,GameMenu.class);
-				startActivity(intent);
 				AboutMenu.this.finish();
         	}
         }.start();
