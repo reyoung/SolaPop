@@ -42,7 +42,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 	private static final int CAMERA_HEIGHT = 600;
 	private static final String DB_FILTER = "GameMain";
 	private String filepath;
-	private boolean hasCard;
+	private boolean hasCard = false;
 	private Sound mHitSound;
 	private static final String STR_RAT_PATH[] = { "keng", "rat1", "rat2",
 			"rat3", "rat4", "rat5", "rat6" };
@@ -72,6 +72,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 			if(b != null)
 			{
 				filepath = b.getString("filepath");
+				hasCard = b.getBoolean("isSDCard");
 			}
 		}
 		// 从Bundle中获得name
@@ -141,7 +142,7 @@ public class GameMain extends BaseGameActivity implements OnGameOverListener {
 				mHitRatTextureRegions, mHitSound, mEngine,
 				getApplicationContext());
 		scene.getLastChild().attachChild(sc);
-		sc.loadLevel(new Level(getApplicationContext(), mEngine, filepath));
+		sc.loadLevel(new Level(getApplicationContext(), mEngine, filepath,hasCard));
 		scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
 			public boolean onSceneTouchEvent(Scene pScene,
 					TouchEvent pSceneTouchEvent) {

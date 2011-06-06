@@ -23,27 +23,45 @@ public class Level implements ILevel{
 	List<Long> m_beats;
 	String m_slpFileName;
 	String m_music;
-	public Level(Context app,Engine eng,String slpFileName){
+	boolean m_hasCard;
+	public Level(Context app,Engine eng,String slpFileName , boolean hasCard){
+		m_hasCard = hasCard;
 		m_context = app;
 		m_engine = eng;
 		m_slpFileName=slpFileName;
 		List<Long > retv= new ArrayList<Long>();
 		SlpFileReader music;
-		try {
-			music = new SlpFileReader(m_slpFileName,app);
-			Log.d("BeatTime",slpFileName);
-			Log.d("BeatTime",music.getArtist());
-			int beatSize=music.beatSize();
-			Log.d("BeatTime",Integer.toString(beatSize));
-			for(int i=0;i<beatSize;++i){
-				long l=music.BeatTime(i);
+		if(hasCard)
+		{
+			music = new SlpFileReader(slpFileName);
+			int beatSize = music.beatSize();
+			for (int i = 0; i < beatSize; ++i) {
+				long l = music.BeatTime(i);
 				retv.add(l);
 			}
-			m_music = new File(slpFileName).getParent()+"/"+music.getMusic();
+			m_music = new File(slpFileName).getParent() + "/"
+					+ music.getMusic();
 			m_beats = retv;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}
+		else
+		{
+			try {
+				music = new SlpFileReader(m_slpFileName, app);
+//				Log.d("BeatTime", slpFileName);
+//				Log.d("BeatTime", music.getArtist());
+				int beatSize = music.beatSize();
+//				Log.d("BeatTime", Integer.toString(beatSize));
+				for (int i = 0; i < beatSize; ++i) {
+					long l = music.BeatTime(i);
+					retv.add(l);
+				}
+				m_music = new File(slpFileName).getParent() + "/"
+						+ music.getMusic();
+				m_beats = retv;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	public Music getMusic() {
