@@ -110,7 +110,7 @@ public class SlpFileReader implements IMusic{
         for (int i = 0; i < slpNoteList.size(); ++i) {
             beatAttribute<Integer, Double> beatAttribute = new beatAttribute<Integer, Double>();
 //            if (Double.parseDouble(String.valueOf(bpm[1][0])) == -1.0) {
-            	timeCount = timeCount + (slpNoteList.get(i).index-1) * 60 / (bpm[0][1]*slpNoteList.get(i).divide);
+            timeCount = timeCount + 60 / (bpm[0][1]*slpNoteList.get(i).divide);
                 //System.out.println(beatAttribute.Time);
 //            } else {
 //                //System.out.println("F2");
