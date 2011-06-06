@@ -79,12 +79,11 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 		
 		this.mMenuTexture = new Texture(256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
-		this.mMenuResetTextureRegion = TextureRegionFactory.createFromAsset(
-				this.mMenuTexture, this, "gfx/menu_reset.png", 0, 150);
-
 		this.mMenuQuitTextureRegion = TextureRegionFactory.createFromAsset(
 				this.mMenuTexture, this, "gfx/menu_quit.png", 0, 0);
+		
+		this.mMenuResetTextureRegion = TextureRegionFactory.createFromAsset(
+				this.mMenuTexture, this, "gfx/menu_reset.png", 0, 0);
 
 		this.mMenuOKTextureRegion = TextureRegionFactory.createFromAsset(
 				this.mMenuTexture, this, "gfx/menu_ok.png", 0, 50);
@@ -115,26 +114,21 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 				float x = pSceneTouchEvent.getX();
 				float y = pSceneTouchEvent.getY();
-				if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+256)&&y>BUTTON_HEIGHT&&y<(BUTTON_HEIGHT+50)){
+				if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+220)&&y>BUTTON_HEIGHT&&y<(BUTTON_HEIGHT+50)){
 					Intent intent= new Intent(GameMenu.this,FileSelector.class);
 					startActivity(intent);
 				}
-				else if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+256)&&y>(BUTTON_HEIGHT+75)&&y<(BUTTON_HEIGHT+75+50)){
+				else if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+220)&&y>(BUTTON_HEIGHT+100)&&y<(BUTTON_HEIGHT+100+50)){
 					Intent intent= new Intent(GameMenu.this,AboutMenu.class);
 					startActivity(intent);					
-				}
-				else if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+256)&&y>(BUTTON_HEIGHT+150)&&y<(BUTTON_HEIGHT+150+50)){
-					System.exit(0);
 				}
 				return false;
 			}
 		});
 		
-		final Sprite button3 = new Sprite(BUTTON_WIDTH,BUTTON_HEIGHT+75, this.mMenuResetTextureRegion);
+		final Sprite button3 = new Sprite(BUTTON_WIDTH,BUTTON_HEIGHT+100, this.mMenuResetTextureRegion);
 		this.mMainScene.getLastChild().attachChild(button3);
 		
-		final Sprite button2 = new Sprite(BUTTON_WIDTH,BUTTON_HEIGHT+150, this.mMenuQuitTextureRegion);
-		this.mMainScene.getLastChild().attachChild(button2);
 	
 		
 
@@ -200,33 +194,33 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 	// Methods
 	// ===========================================================
 
-	protected void createMenuScene() {
-		this.mMenuScene = new MenuScene(this.mCamera);
-
-		final SpriteMenuItem okMenuItem = new SpriteMenuItem(MENU_OK,
-				this.mMenuOKTextureRegion);
-		okMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA,
-				GL10.GL_ONE_MINUS_SRC_ALPHA);
-		this.mMenuScene.addMenuItem(okMenuItem);
-		
-		final SpriteMenuItem resetMenuItem = new SpriteMenuItem(MENU_RESET,
-				this.mMenuResetTextureRegion);
-		resetMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA,
-				GL10.GL_ONE_MINUS_SRC_ALPHA);
-		this.mMenuScene.addMenuItem(resetMenuItem);
-		
-		final SpriteMenuItem quitMenuItem = new SpriteMenuItem(MENU_QUIT,
-				this.mMenuQuitTextureRegion);
-		quitMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA,
-				GL10.GL_ONE_MINUS_SRC_ALPHA);
-		this.mMenuScene.addMenuItem(quitMenuItem);
-		
-		this.mMenuScene.buildAnimations();
-
-		this.mMenuScene.setBackgroundEnabled(false);
-
-		this.mMenuScene.setOnMenuItemClickListener(this);
-	}
+//	protected void createMenuScene() {
+//		this.mMenuScene = new MenuScene(this.mCamera);
+//
+//		final SpriteMenuItem okMenuItem = new SpriteMenuItem(MENU_OK,
+//				this.mMenuOKTextureRegion);
+//		okMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA,
+//				GL10.GL_ONE_MINUS_SRC_ALPHA);
+//		this.mMenuScene.addMenuItem(okMenuItem);
+//		
+//		final SpriteMenuItem resetMenuItem = new SpriteMenuItem(MENU_RESET,
+//				this.mMenuResetTextureRegion);
+//		resetMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA,
+//				GL10.GL_ONE_MINUS_SRC_ALPHA);
+//		this.mMenuScene.addMenuItem(resetMenuItem);
+//		
+//		final SpriteMenuItem quitMenuItem = new SpriteMenuItem(MENU_QUIT,
+//				this.mMenuQuitTextureRegion);
+//		quitMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA,
+//				GL10.GL_ONE_MINUS_SRC_ALPHA);
+//		this.mMenuScene.addMenuItem(quitMenuItem);
+//		
+//		this.mMenuScene.buildAnimations();
+//
+//		this.mMenuScene.setBackgroundEnabled(false);
+//
+//		this.mMenuScene.setOnMenuItemClickListener(this);
+//	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
