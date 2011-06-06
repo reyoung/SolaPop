@@ -1,6 +1,7 @@
-package tjuhot.solapop.menu;
+package tjuhot.solapop;
 
 import tjuhot.solapop.R;
+import tjuhot.solapop.menu.GameMenu;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +17,12 @@ public class WelcomMenu extends Activity {
         		try {
 					sleep(5000);
 					//change
-					//Intent intent= new Intent(WelcomMenu.this,GameMenu.class);
-					//startActivity(intent);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				/// TODO
+				Intent intent= new Intent(WelcomMenu.this,GameMenu.class);
+				startActivity(intent);
 				WelcomMenu.this.finish();
         	}
         }.start();
