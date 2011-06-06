@@ -35,7 +35,7 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 
 	private static final int CAMERA_WIDTH = 512;
 	private static final int CAMERA_HEIGHT = 300;
-	private static final int BUTTON_WIDTH = 150;
+	private static final int BUTTON_WIDTH = 30;
 	private static final int BUTTON_HEIGHT = 220;
 	protected static final int MENU_OK = 0;
 	protected static final int MENU_RESET = MENU_OK + 1;
@@ -114,15 +114,20 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 				float x = pSceneTouchEvent.getX();
 				float y = pSceneTouchEvent.getY();
-				if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+220)&&y>BUTTON_HEIGHT&&y<(BUTTON_HEIGHT+50)){
+				if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+200)&&y>BUTTON_HEIGHT&&y<(BUTTON_HEIGHT+50)){
 					Intent intent= new Intent(GameMenu.this,FileSelector.class);
 					startActivity(intent);
 				}
-				
+				if(x>(BUTTON_WIDTH+250)&&x<(BUTTON_WIDTH+250+200)&&y>BUTTON_HEIGHT&&y<(BUTTON_HEIGHT+50)){
+					Intent intent= new Intent(GameMenu.this,AboutMenu.class);
+					startActivity(intent);
+				}
 				return false;
 			}
 		});
 		
+		final Sprite button2 = new Sprite((BUTTON_WIDTH+250),BUTTON_HEIGHT, this.mMenuResetTextureRegion);
+		this.mMainScene.getLastChild().attachChild(button2);
 		
 	
 		
