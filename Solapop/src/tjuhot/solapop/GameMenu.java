@@ -29,13 +29,14 @@ import tjuhot.solapop.GameMain;
 import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListener {
 
 	private static final int CAMERA_WIDTH = 512;
 	private static final int CAMERA_HEIGHT = 300;
 	private static final int BUTTON_WIDTH = 150;
-	private static final int BUTTON_HEIGHT = 75;
+	private static final int BUTTON_HEIGHT = 50;
 	protected static final int MENU_OK = 0;
 	protected static final int MENU_RESET = MENU_OK + 1;
 	protected static final int MENU_QUIT = MENU_RESET + 1;
@@ -95,8 +96,8 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 	public Scene onLoadScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 
-		this.createMenuScene();
-		Log.e("TAG", "Step1");
+//		this.createMenuScene();
+//		Log.e("TAG", "Step1");
 		/* Just a simple scene with an animated face flying around. */
 		this.mMainScene = new Scene(1);
 		this.mMainScene.setBackground(new ColorBackground(0.09804f, 0.6274f,
@@ -119,14 +120,20 @@ public class GameMenu extends BaseGameActivity  implements IOnMenuItemClickListe
 					startActivity(intent);
 				}
 				else if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+256)&&y>(BUTTON_HEIGHT+100)&&y<(BUTTON_HEIGHT+100+128)){
+					Intent intent= new Intent(GameMenu.this,AboutMenu.class);
+					startActivity(intent);					
+				}
+				else if(x>BUTTON_WIDTH&&x<(BUTTON_WIDTH+256)&&y>(BUTTON_HEIGHT+200)&&y<(BUTTON_HEIGHT+200+128)){
 					System.exit(0);
 				}
 				return false;
 			}
 		});
 		
+		final Sprite button3 = new Sprite(BUTTON_WIDTH,BUTTON_HEIGHT+100, this.mMenuResetTextureRegion);
+		this.mMainScene.getLastChild().attachChild(button3);
 		
-		final Sprite button2 = new Sprite(BUTTON_WIDTH,BUTTON_HEIGHT+100, this.mMenuQuitTextureRegion);
+		final Sprite button2 = new Sprite(BUTTON_WIDTH,BUTTON_HEIGHT+200, this.mMenuQuitTextureRegion);
 		this.mMainScene.getLastChild().attachChild(button2);
 	
 		
